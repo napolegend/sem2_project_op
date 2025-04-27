@@ -1,1 +1,5 @@
+Selenium
+webdriver_manager
+pandas
+numpy
 scipy
