@@ -1,2 +1,1 @@
-Selenium
-webdriver_manager
+scipy
