@@ -3,3 +3,8 @@ webdriver_manager
 pandas
 numpy
 scipy
+seaborn
+dash
+jupyter-dash
+plotly
+
