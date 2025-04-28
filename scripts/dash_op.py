@@ -11,14 +11,14 @@ from scipy import stats
 def parse_price_history(history_str):
     try:
         history = json.loads(history_str.replace("'", '"'))
-        return [{'dt': datetime.utcfromtimestamp(item['dt']), 
-                 'price': item['price']['RUB'] / 100} 
+        return [{'dt': datetime.utcfromtimestamp(item['dt']),
+                 'price': item['price']['RUB'] / 100}
                 for item in history]
     except:
         return None
 
-df = pd.read_csv('../data/wildberries_data_all.csv', 
-                 converters={"История_цен": parse_price_history, 
+df = pd.read_csv('../data/wildberries_data_all.csv',
+                 converters={"История_цен": parse_price_history,
                             "Текущая_цена": lambda x: int("".join(x[:-1].split()))})
 
 
@@ -29,24 +29,24 @@ server = app.server
 # Разметка приложения
 app.layout = html.Div([
     html.H1("Анализ цен Wildberries", style={'textAlign': 'center'}),
-    
+
     html.Div([
         html.Label("Выберите артикул товара:"),
         dcc.Dropdown(
             id='article-dropdown',
-            options=[{'label': str(art), 'value': art} 
+            options=[{'label': str(art), 'value': art}
                     for art in df['Артикул'].unique()],
             value=df['Артикул'].iloc[0]
         )
     ], style={'width': '50%', 'margin': '20px'}),
-    
+
     dcc.Graph(id='price-history-plot'),
-    
+
     html.Div([
         html.Div([
             dcc.Graph(id='price-distribution')
         ], style={'width': '49%', 'display': 'inline-block'}),
-        
+
         html.Div([
             html.H3("Статистика цен"),
             html.Div(id='price-stats-table')
@@ -65,7 +65,7 @@ def update_plots(selected_article):
     # Выбор нужных данных
     filtered_df = df[df['Артикул'] == selected_article]
     price_history = filtered_df['История_цен'].iloc[0]
-    
+
     # График истории цен
     history_fig = px.line(
         pd.DataFrame(price_history),
@@ -74,7 +74,7 @@ def update_plots(selected_article):
         title=f"Динамика цены для артикула {selected_article}",
         labels={'dt': 'Дата', 'price': 'Цена (руб)'}
     )
-    
+
     # Гистограмма распределения всех цен
     dist_fig = px.histogram(
         df,
@@ -83,7 +83,7 @@ def update_plots(selected_article):
         title='Распределение текущих цен',
         labels={'Текущая_цена': 'Цена (руб)'}
     )
-    
+
     # Общая стата по датасету
     stats_df = df['Текущая_цена'].describe().reset_index()
     stats_table = dash.dash_table.DataTable(
@@ -91,7 +91,7 @@ def update_plots(selected_article):
         data=stats_df.to_dict('records'),
         style_cell={'padding': '5px'}
     )
-    
+
     return history_fig, dist_fig, stats_table
 
 if __name__ == '__main__':
