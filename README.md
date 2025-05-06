@@ -6,7 +6,7 @@
 #### notebooks/wb_scrap.ipynb - notebook скреппинга данных с вб
 #### notebooks/analysis.ipynb - notebook обработки, визуализации данных и вывод
 #### data/* - csv файлы, содержащие результаты скреппинга
-#### scripts/dash.py - файл дешбоарда
+#### scripts/dash_op.py - файл дешбоарда
 
 ### Запуск dashboard:
 ```
