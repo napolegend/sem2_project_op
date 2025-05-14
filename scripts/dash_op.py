@@ -17,7 +17,7 @@ def parse_price_history(history_str):
     except:
         return None
 
-df = pd.read_csv('../data/wildberries_data_all.csv',
+df = pd.read_csv('./data/wildberries_data_all.csv',
                  converters={"История_цен": parse_price_history,
                             "Текущая_цена": lambda x: int("".join(x[:-1].split()))})
 
